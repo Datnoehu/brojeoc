@@ -1,0 +1,24 @@
+name: Auto Request
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  auto-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install curl
+        run: sudo apt-get install -y curl
+
+      - name: Send request every 5 seconds
+        run: |
+          while true; do
+            curl -X GET "https://uhjihhhhh.x10.mx/callback.php"
+            echo "Request sent at $(date)"
+            sleep 5
+          done
+          
