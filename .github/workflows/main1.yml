@@ -1,0 +1,24 @@
+name: Windows RDP
+
+on:
+  workflow_dispatch:
+
+jobs:
+  rdp:
+    runs-on: windows-latest
+    steps:
+      - name: Enable RDP
+        run: |
+          net user runneradmin /add
+          net user runneradmin password123 /add
+          net localgroup administrators runneradmin /add
+          reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+          reg add "HKLM\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 0 /f
+          netsh advfirewall firewall set rule group="Remote Desktop" new enable=Yes
+          net start TermService
+        shell: cmd
+
+      - name: Get IP Address
+        run: |
+          curl -s https://api64.ipify.org
+
