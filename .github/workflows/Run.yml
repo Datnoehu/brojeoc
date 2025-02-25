@@ -1,0 +1,31 @@
+name: Setup Goten
+
+on: [push, pull_request]
+
+jobs:
+  setup_and_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y unzip
+
+      - name: Unzip goten.zip
+        run: unzip goten.zip -d goten
+
+      - name: Install Python packages
+        run: |
+          pip install pycryptodome
+          pip install munch
+          pip install attr
+          pip install requests
+          pip install colorama
+
+      - name: Run Goten
+        run: python goten/goten.py
+        
